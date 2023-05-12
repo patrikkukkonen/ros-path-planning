@@ -19,11 +19,12 @@ import os
 from ament_index_python.packages import get_package_share_directory
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription
+from launch.actions import DeclareLaunchArgument, ExecuteProcess, IncludeLaunchDescription, TimerAction
 from launch.conditions import IfCondition
 from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
+
 
 
 def generate_launch_description():
@@ -249,6 +250,36 @@ def generate_launch_description():
                           'autostart': autostart,
                           'use_composition': use_composition,
                           'use_respawn': use_respawn}.items())
+    
+
+    # Automate the waypoint navigation
+    # Declare additional launch arguments
+    declare_waypoint_executor_cmd = DeclareLaunchArgument(
+        'enable_waypoint_navigation',
+        default_value='true',
+        description='Enable waypoint navigation'
+    )
+
+    # Declare a file path to the waypoint yaml file
+    declare_params_file_cmd = DeclareLaunchArgument(
+    'params_file',
+    default_value=os.path.join(pkg_dir, 'params', 'waypoint_params.yaml'),
+    description='Full path to the YAML file containing waypoint parameters')
+
+
+    # Launch the waypoint executor node
+    # Use TimerAction to introduce a delay before executing the waypoint follower node
+    #waypoint_executor_cmd = #TimerAction(
+        #period=10.0, # Adjust this to your desired delay (in seconds)
+        #actions=[
+    waypoint_executor_cmd = Node(
+            package='nav2_waypoint_follower',
+            executable='waypoint_follower',
+            name='waypoint_executor',
+            output='screen',
+            #parameters=[{'waypoints': ['/position_a', '/position_b']}]  # Modify with your desired waypoints
+            parameters=[{'waypoints': "[{'x': -3.0, 'y': 1.5}]"}]
+        )#])
 
     # Create the launch description and populate
     ld = LaunchDescription()
@@ -272,6 +303,10 @@ def generate_launch_description():
     ld.add_action(declare_robot_name_cmd)
     ld.add_action(declare_robot_sdf_cmd)
     ld.add_action(declare_use_respawn_cmd)
+
+    # Add the actions to launch all of the navigation nodes
+    ld.add_action(declare_waypoint_executor_cmd)
+    ld.add_action(waypoint_executor_cmd)
 
     # Add any conditioned actions
     ld.add_action(start_gazebo_server_cmd)
