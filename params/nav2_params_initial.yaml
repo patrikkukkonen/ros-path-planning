@@ -164,7 +164,7 @@ controller_server:
     #   max_angular_accel: 3.2
     #   simulate_ahead_time: 1.0
 
-    # Regulated Pure Pursuit parameters
+    # Regulated Pure Pursuit controller parameters
     FollowPath: # This seems to work better for the turtlebot3 than the DWB planner (default)
       plugin: "nav2_regulated_pure_pursuit_controller::RegulatedPurePursuitController"
       desired_linear_vel: 0.5
