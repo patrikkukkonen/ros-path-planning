@@ -24,6 +24,9 @@ install(PROGRAMS
   scripts/moving3.py
   scripts/moving4.py
   scripts/moving5.py
+  scripts/waypoint_follower.py
+  #scripts/robot_navigator.py
+  scripts/object_spawner.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
