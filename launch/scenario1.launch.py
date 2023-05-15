@@ -25,6 +25,8 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, PythonExpression
 from launch_ros.actions import Node
 
+from launch.actions import ExecuteProcess
+
 
 
 def generate_launch_description():
@@ -110,7 +112,7 @@ def generate_launch_description():
     # Modified: Use custom made nav2_params file where initial pose is set
     declare_params_file_cmd = DeclareLaunchArgument(
         'params_file',
-        default_value=os.path.join(pkg_dir, 'params', 'nav2_params_initial.yaml'), # TODO: Fix noise in laser scan ---- FIXED, was bad world file
+        default_value=os.path.join(pkg_dir, 'params', 'nav2_params_initial.yaml'), # Fix noise in laser scan ---- FIXED, was bad world file
         description='Full path to the ROS2 parameters file to use for all launched nodes')
 
     declare_autostart_cmd = DeclareLaunchArgument(
@@ -251,35 +253,19 @@ def generate_launch_description():
                           'use_composition': use_composition,
                           'use_respawn': use_respawn}.items())
     
+    # start the demo autonomy task
+    demo_cmd = Node(
+        package='path_finding',
+        executable='waypoint_follower.py',
+        emulate_tty=True,
+        output='screen')
+    
+    # Spawner node for spawning objects
+    spawner_cmd = Node(
+        package='path_finding',
+        executable='object_spawner.py',
+        output='screen')
 
-    # Automate the waypoint navigation
-    # Declare additional launch arguments
-    declare_waypoint_executor_cmd = DeclareLaunchArgument(
-        'enable_waypoint_navigation',
-        default_value='true',
-        description='Enable waypoint navigation'
-    )
-
-    # Declare a file path to the waypoint yaml file
-    declare_params_file_cmd = DeclareLaunchArgument(
-    'params_file',
-    default_value=os.path.join(pkg_dir, 'params', 'waypoint_params.yaml'),
-    description='Full path to the YAML file containing waypoint parameters')
-
-
-    # Launch the waypoint executor node
-    # Use TimerAction to introduce a delay before executing the waypoint follower node
-    #waypoint_executor_cmd = #TimerAction(
-        #period=10.0, # Adjust this to your desired delay (in seconds)
-        #actions=[
-    waypoint_executor_cmd = Node(
-            package='nav2_waypoint_follower',
-            executable='waypoint_follower',
-            name='waypoint_executor',
-            output='screen',
-            #parameters=[{'waypoints': ['/position_a', '/position_b']}]  # Modify with your desired waypoints
-            parameters=[{'waypoints': "[{'x': -3.0, 'y': 1.5}]"}]
-        )#])
 
     # Create the launch description and populate
     ld = LaunchDescription()
@@ -304,10 +290,6 @@ def generate_launch_description():
     ld.add_action(declare_robot_sdf_cmd)
     ld.add_action(declare_use_respawn_cmd)
 
-    # Add the actions to launch all of the navigation nodes
-    ld.add_action(declare_waypoint_executor_cmd)
-    ld.add_action(waypoint_executor_cmd)
-
     # Add any conditioned actions
     ld.add_action(start_gazebo_server_cmd)
     ld.add_action(start_gazebo_client_cmd)
@@ -317,6 +299,19 @@ def generate_launch_description():
     ld.add_action(start_robot_state_publisher_cmd)
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
+
+
+    # Waypoint follower node
+    #ld.add_action(waypoint_follower_node)
+    ld.add_action(TimerAction(
+        period=5.0,
+        actions=[demo_cmd]
+    ))
+
+    # ld.add_action(TimerAction(
+    #     period=5.0,
+    #     actions=[spawner_cmd]
+    # ))
 
     # print(pkg_dir)
     # print(pkg_dir)
