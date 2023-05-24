@@ -100,7 +100,7 @@ def main():
     spawn_interval = 0.5
 
     for i in range(num_objects):
-        # Spawn the obstacle at a specific pose
+        # Spawn the obstacle at a specific poses
         obstacle_name = f'obstacle_{i}'
         obstacle_pose = Pose()
         obstacle_pose.position.x = -0.5
