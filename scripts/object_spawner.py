@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import time
 import rclpy
 from rclpy.node import Node
 from gazebo_msgs.srv import SpawnEntity, DeleteEntity
@@ -64,14 +65,14 @@ def main():
                 <collision name="collision">
                     <geometry>
                         <box>
-                            <size>1 1 1</size>
+                            <size>0.1 0.1 0.25</size>
                         </box>
                     </geometry>
                 </collision>
                 <visual name="visual">
                     <geometry>
                         <box>
-                            <size>1 1 1</size>
+                            <size>0.1 0.1 0.25</size>
                         </box>
                     </geometry>
                 </visual>
@@ -81,17 +82,33 @@ def main():
     """
 
     # Spawn the obstacle at a specific pose
-    obstacle_pose = Pose()
-    obstacle_pose.position.x = 1.0
-    obstacle_pose.position.y = 2.0
-    obstacle_pose.position.z = 0.5
-    spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+    # obstacle_pose = Pose()
+    # obstacle_pose.position.x = 1.0
+    # obstacle_pose.position.y = 2.0
+    # obstacle_pose.position.z = 0.5
+    # spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
 
-    # Wait for some time before deleting the obstacle
-    rclpy.spin_once(spawner, timeout_sec=5.0)
+    # # Wait for some time before deleting the obstacle
+    # #rclpy.spin_once(spawner, timeout_sec=5.0)
+    # time.sleep(5.0)
 
-    # Delete the obstacle
-    spawner.delete_object(obstacle_name)
+    # # Delete the obstacle
+    # spawner.delete_object(obstacle_name)
+
+    # loop
+    num_objects = 10
+    spawn_interval = 0.5
+
+    for i in range(num_objects):
+        # Spawn the obstacle at a specific pose
+        obstacle_name = f'obstacle_{i}'
+        obstacle_pose = Pose()
+        obstacle_pose.position.x = -0.5
+        obstacle_pose.position.y = i*-0.175
+        obstacle_pose.position.z = 0.5
+        spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+
+        time.sleep(spawn_interval)
 
     rclpy.shutdown()
 
