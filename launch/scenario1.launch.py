@@ -101,7 +101,7 @@ def generate_launch_description():
     declare_map_yaml_cmd = DeclareLaunchArgument(
         'map',
         default_value=os.path.join(
-            pkg_dir, 'maps', 'maze.yaml'),
+            pkg_dir, 'maps', 'maze_v2.yaml'),
         description='Full path to map file to load')
 
     declare_use_sim_time_cmd = DeclareLaunchArgument(
@@ -159,7 +159,7 @@ def generate_launch_description():
         #              https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/91
         # default_value=os.path.join(get_package_share_directory('turtlebot3_gazebo'),
         # worlds/turtlebot3_worlds/waffle.model')
-        default_value=os.path.join(pkg_dir, 'worlds', 'maze2.world'), # TODO: FIX THIS
+        default_value=os.path.join(pkg_dir, 'worlds', 'maze3.world'), # TODO: FIX THIS
         description='Full path to world model file to load')
 
     declare_robot_name_cmd = DeclareLaunchArgument(
