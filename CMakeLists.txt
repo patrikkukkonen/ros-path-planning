@@ -27,6 +27,8 @@ install(PROGRAMS
   scripts/waypoint_follower.py
   #scripts/robot_navigator.py
   scripts/object_spawner.py
+  scripts/object_spawner2.py
+  scripts/object_spawner3.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
