@@ -252,16 +252,6 @@ def generate_launch_description():
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
 
-    # print("VITTU")
-    # print("VITTU")
-    # print("VITTU")
-    # print("VITTU")
-    # print("VITTU")
-    # print("VITTU")
-    # print("VITTU")
-    # print("VITTU")
-    # print("VITTU")
-
     # print(pkg_dir)
     # print(pkg_dir)
     # print(pkg_dir)
