@@ -96,15 +96,15 @@ def main():
     # spawner.delete_object(obstacle_name)
 
     # loop
-    num_objects = 10
+    num_objects = 6
     spawn_interval = 0.5
 
     for i in range(num_objects):
         # Spawn the obstacle at a specific poses
         obstacle_name = f'obstacle_{i}'
         obstacle_pose = Pose()
-        obstacle_pose.position.x = -0.5
-        obstacle_pose.position.y = i*-0.175
+        obstacle_pose.position.x = -1.0
+        obstacle_pose.position.y = -0.1 + i*-0.15
         obstacle_pose.position.z = 0.5
         spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
 
