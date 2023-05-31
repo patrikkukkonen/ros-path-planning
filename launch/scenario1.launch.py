@@ -254,7 +254,7 @@ def generate_launch_description():
                           'use_respawn': use_respawn}.items())
     
     # start the demo autonomy task
-    demo_cmd = Node(
+    waypoint_follower_cmd = Node(
         package='path_finding',
         executable='waypoint_follower.py',
         emulate_tty=True,
@@ -303,15 +303,17 @@ def generate_launch_description():
 
     # Waypoint follower node
     #ld.add_action(waypoint_follower_node)
+    # Delay the start of the waypoint following node by 10 seconds so that gazebo has time to start
     ld.add_action(TimerAction(
-        period=5.0,
-        actions=[demo_cmd]
+        period=10.0,
+        actions=[waypoint_follower_cmd]
     ))
 
-    # ld.add_action(TimerAction(
-    #     period=5.0,
-    #     actions=[spawner_cmd]
-    # ))
+    # Delay the start of the object spawner node by 25 seconds
+    ld.add_action(TimerAction(
+        period=25.0,
+        actions=[spawner_cmd]
+    ))
 
     # print(pkg_dir)
     # print(pkg_dir)
