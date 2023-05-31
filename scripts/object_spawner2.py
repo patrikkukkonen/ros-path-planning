@@ -109,6 +109,8 @@ def main():
         spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
 
         time.sleep(spawn_interval)
+    
+    time.sleep(5.0)
 
     # loop
     num_objects_2 = 6
