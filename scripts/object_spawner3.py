@@ -112,14 +112,14 @@ def main():
     
     
     # Wait for some time before deleting the obstacle
-    time.sleep(5.0)
+    # time.sleep(5.0)
 
-    # Delete the obstacles
-    for i in range(num_objects):
-        obstacle_name = f'obstacle_{i}'
-        spawner.delete_object(obstacle_name)
+    # # Delete the obstacles
+    # for i in range(num_objects):
+    #     obstacle_name = f'obstacle_{i}'
+    #     spawner.delete_object(obstacle_name)
 
-        time.sleep(spawn_interval)
+    #     time.sleep(spawn_interval)
 
 
     # loop
@@ -136,19 +136,19 @@ def main():
 
         time.sleep(spawn_interval)
     
-    # loop
-    num_objects_3 = 6
+    # # loop
+    # num_objects_3 = 6
     
-    for i in range(num_objects_3):
-        # Spawn the obstacle at a specific poses
-        obstacle_name = f'obstacle3_{i}'
-        obstacle_pose = Pose()
-        obstacle_pose.position.x = -2.1 + i*-0.15
-        obstacle_pose.position.y = 2.0
-        obstacle_pose.position.z = 0.5
-        spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+    # for i in range(num_objects_3):
+    #     # Spawn the obstacle at a specific poses
+    #     obstacle_name = f'obstacle3_{i}'
+    #     obstacle_pose = Pose()
+    #     obstacle_pose.position.x = -2.1 + i*-0.15
+    #     obstacle_pose.position.y = 2.0
+    #     obstacle_pose.position.z = 0.5
+    #     spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
 
-        time.sleep(spawn_interval)
+    #     time.sleep(spawn_interval)
     
     # loop
     num_objects_4 = 6
@@ -164,19 +164,19 @@ def main():
 
         time.sleep(spawn_interval)
     
-    # loop
-    num_objects_5 = 6
+    # # loop
+    # num_objects_5 = 6
     
-    for i in range(num_objects_5):
-        # Spawn the obstacle at a specific poses
-        obstacle_name = f'obstacle5_{i}'
-        obstacle_pose = Pose()
-        obstacle_pose.position.x = 2.0
-        obstacle_pose.position.y = -1.1 + i*-0.15
-        obstacle_pose.position.z = 0.5
-        spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+    # for i in range(num_objects_5):
+    #     # Spawn the obstacle at a specific poses
+    #     obstacle_name = f'obstacle5_{i}'
+    #     obstacle_pose = Pose()
+    #     obstacle_pose.position.x = 2.0
+    #     obstacle_pose.position.y = -1.1 + i*-0.15
+    #     obstacle_pose.position.z = 0.5
+    #     spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
 
-        time.sleep(spawn_interval)
+    #     time.sleep(spawn_interval)
 
 
 
