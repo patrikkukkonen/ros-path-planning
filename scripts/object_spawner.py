@@ -50,67 +50,73 @@ class ObjectSpawner(Node):
         else:
             self.get_logger().error('Failed to delete object: {}'.format(name))
 
-def main():
-    rclpy.init()
-    spawner = ObjectSpawner()
 
-    # Example usage
-    obstacle_name = 'obstacle'
-    obstacle_model = """
-        <?xml version="1.0"?>
-        <sdf version="1.7">
-        <model name="obstacle">
-            <pose>0 0 0 0 0 0</pose>
-            <link name="link">
-                <collision name="collision">
-                    <geometry>
-                        <box>
-                            <size>0.1 0.1 0.25</size>
-                        </box>
-                    </geometry>
-                </collision>
-                <visual name="visual">
-                    <geometry>
-                        <box>
-                            <size>0.1 0.1 0.25</size>
-                        </box>
-                    </geometry>
-                </visual>
-            </link>
-        </model>
-        </sdf>
-    """
+    # Function to spawn the obstacle at a specific pose
+    def spawn_objects(self, id, num_objects, spawn_interval, x_pose, y_pose, z_pose, horizontal=True):
+        """Spawn multiple objects in Gazebo"""
 
-    # Spawn the obstacle at a specific pose
-    # obstacle_pose = Pose()
-    # obstacle_pose.position.x = 1.0
-    # obstacle_pose.position.y = 2.0
-    # obstacle_pose.position.z = 0.5
-    # spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+        
+        # rclpy.init() # Initialize the ROS client library
+        #spawner = ObjectSpawner() # Create an instance of the ObjectSpawner class
 
-    # # Wait for some time before deleting the obstacle
-    # #rclpy.spin_once(spawner, timeout_sec=5.0)
-    # time.sleep(5.0)
+        # Create the obstacle model
+        obstacle_name = 'obstacle'
+        obstacle_model = """
+            <?xml version="1.0"?>
+            <sdf version="1.7">
+            <model name="obstacle">
+                <pose>0 0 0 0 0 0</pose>
+                <link name="link">
+                    <collision name="collision">
+                        <geometry>
+                            <box>
+                                <size>0.1 0.1 0.25</size>
+                            </box>
+                        </geometry>
+                    </collision>
+                    <visual name="visual">
+                        <geometry>
+                            <box>
+                                <size>0.1 0.1 0.25</size>
+                            </box>
+                        </geometry>
+                    </visual>
+                </link>
+            </model>
+            </sdf>
+        """
 
-    # # Delete the obstacle
-    # spawner.delete_object(obstacle_name)
+        if horizontal:
+            for i in range(num_objects):
+                # Spawn the obstacle at a specific poses
+                obstacle_name = f'obstacle{id}_{i}'
+                obstacle_pose = Pose()
+                obstacle_pose.position.x = x_pose #-1.0
+                obstacle_pose.position.y = y_pose + i * -0.15 #-0.1 + i*-0.15
+                obstacle_pose.position.z = z_pose #0.5
+                self.spawn_object(obstacle_name, obstacle_model, obstacle_pose)  # spawner
 
-    # loop
-    num_objects = 6
-    spawn_interval = 0.5
+                time.sleep(spawn_interval)
+        else: # if vertical
+            for i in range(num_objects):
+                # Spawn the obstacle at a specific poses
+                obstacle_name = f'obstacle{id}_{i}'
+                obstacle_pose = Pose()
+                obstacle_pose.position.x = x_pose + i * 0.15 #-1.0
+                obstacle_pose.position.y = y_pose
+                obstacle_pose.position.z = z_pose
+                self.spawn_object(obstacle_name, obstacle_model, obstacle_pose)  # spawner
 
-    for i in range(num_objects):
-        # Spawn the obstacle at a specific poses
-        obstacle_name = f'obstacle_{i}'
-        obstacle_pose = Pose()
-        obstacle_pose.position.x = -1.0
-        obstacle_pose.position.y = -0.1 + i*-0.15
-        obstacle_pose.position.z = 0.5
-        spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+                time.sleep(spawn_interval)
+        
+        # rclpy.shutdown()
 
-        time.sleep(spawn_interval)
+    def delete_objects(self, id, num_objects, delete_interval):
+        """Delete selected objects in Gazebo"""
+        #spawner = ObjectSpawner() # Create an instance of the ObjectSpawner class
+        # Delete the obstacles
+        for i in range(num_objects):
+            obstacle_name = f'obstacle{id}_{i}'
+            self.delete_object(obstacle_name)
 
-    rclpy.shutdown()
-
-if __name__ == '__main__':
-    main()
+            time.sleep(delete_interval)
