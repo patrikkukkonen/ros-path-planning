@@ -263,7 +263,7 @@ def generate_launch_description():
     # Spawner node for spawning objects
     spawner_cmd = Node(
         package='path_finding',
-        executable='object_spawner3.py',
+        executable='scenario3_objects.py',
         output='screen')
 
 
