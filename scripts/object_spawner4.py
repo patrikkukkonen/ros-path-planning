@@ -49,6 +49,8 @@ class ObjectSpawner(Node):
             self.get_logger().info('Object deleted successfully: {}'.format(name))
         else:
             self.get_logger().error('Failed to delete object: {}'.format(name))
+    
+    
 
 def main():
     rclpy.init()
@@ -81,6 +83,39 @@ def main():
         </sdf>
     """
 
+    # Function to spawn the obstacle at a specific pose
+    def spawn_objects(id, num_objects, spawn_interval, x_pose, y_pose, z_pose, horizontal=True):
+        #num_objects = 6
+        #spawn_interval = 0.5
+
+        #x_pose = 1.0
+        #y_pose = -0.1
+        #z_pose = 0.5
+
+        if horizontal:
+            for i in range(num_objects):
+                # Spawn the obstacle at a specific poses
+                obstacle_name = f'obstacle{id}_{i}'
+                obstacle_pose = Pose()
+                obstacle_pose.position.x = x_pose #-1.0
+                obstacle_pose.position.y = y_pose + i * -0.15 #-0.1 + i*-0.15
+                obstacle_pose.position.z = z_pose #0.5
+                spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+
+                time.sleep(spawn_interval)
+        else: # if vertical
+            for i in range(num_objects):
+                # Spawn the obstacle at a specific poses
+                obstacle_name = f'obstacle{id}_{i}'
+                obstacle_pose = Pose()
+                obstacle_pose.position.x = x_pose + i * 0.15 #-1.0
+                obstacle_pose.position.y = y_pose
+                obstacle_pose.position.z = z_pose
+                spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+
+                time.sleep(spawn_interval)
+            
+
     # Spawn the obstacle at a specific pose
     # obstacle_pose = Pose()
     # obstacle_pose.position.x = 1.0
@@ -96,19 +131,103 @@ def main():
     # spawner.delete_object(obstacle_name)
 
     # loop
-    num_objects = 6
-    spawn_interval = 0.5
+    # horizontal
+    # num_objects = 6
+    # spawn_interval = 0.5
 
-    for i in range(num_objects):
-        # Spawn the obstacle at a specific poses
-        obstacle_name = f'obstacle_{i}'
-        obstacle_pose = Pose()
-        obstacle_pose.position.x = -1.0
-        obstacle_pose.position.y = -0.1 + i*-0.15
-        obstacle_pose.position.z = 0.5
-        spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+    # for i in range(num_objects):
+    #     # Spawn the obstacle at a specific poses
+    #     obstacle_name = f'obstacle_{i}'
+    #     obstacle_pose = Pose()
+    #     obstacle_pose.position.x = -1.0
+    #     obstacle_pose.position.y = -0.1 + i*-0.15
+    #     obstacle_pose.position.z = 0.5
+    #     spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
 
-        time.sleep(spawn_interval)
+    #     time.sleep(spawn_interval)
+    
+    # above but with function
+    spawn_objects(id=1, num_objects=6, spawn_interval=0.5, x_pose=-1.0, y_pose=-0.1, z_pose=0.5, horizontal=True)
+    
+    
+    
+    # Wait for some time before deleting the obstacle
+    # time.sleep(5.0)
+
+    # # Delete the obstacles
+    # for i in range(num_objects):
+    #     obstacle_name = f'obstacle_{i}'
+    #     spawner.delete_object(obstacle_name)
+
+    #     time.sleep(spawn_interval)
+
+
+    # loop
+    # hoizontal
+    # num_objects_2 = 6
+    
+    # for i in range(num_objects_2):
+    #     # Spawn the obstacle at a specific poses
+    #     obstacle_name = f'obstacle2_{i}'
+    #     obstacle_pose = Pose()
+    #     obstacle_pose.position.x = -1.0
+    #     obstacle_pose.position.y = -2.1 + i*-0.15
+    #     obstacle_pose.position.z = 0.5
+    #     spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+
+    #     time.sleep(spawn_interval)
+    
+    spawn_objects(id=2, num_objects=6, spawn_interval=0.5, x_pose=-1.0, y_pose=-2.1, z_pose=0.5, horizontal=True)
+    
+    # # loop
+    # 
+    # num_objects_3 = 6
+    
+    # for i in range(num_objects_3):
+    #     # Spawn the obstacle at a specific poses
+    #     obstacle_name = f'obstacle3_{i}'
+    #     obstacle_pose = Pose()
+    #     obstacle_pose.position.x = -2.1 + i*-0.15
+    #     obstacle_pose.position.y = 2.0
+    #     obstacle_pose.position.z = 0.5
+    #     spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+
+    #     time.sleep(spawn_interval)
+    
+    # loop
+    # vertical
+    # num_objects_4 = 6
+    
+    # for i in range(num_objects_4):
+    #     # Spawn the obstacle at a specific poses
+    #     obstacle_name = f'obstacle4_{i}'
+    #     obstacle_pose = Pose()
+    #     obstacle_pose.position.x = 1.1 + i*0.15
+    #     obstacle_pose.position.y = 2.0
+    #     obstacle_pose.position.z = 0.5
+    #     spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+
+    #     time.sleep(spawn_interval)
+    
+    spawn_objects(id=3, num_objects=6, spawn_interval=0.5, x_pose=1.1, y_pose=2.0, z_pose=0.5, horizontal=False)
+    
+    # # loop
+    # # horizontal
+    # num_objects_5 = 6
+    
+    # for i in range(num_objects_5):
+    #     # Spawn the obstacle at a specific poses
+    #     obstacle_name = f'obstacle5_{i}'
+    #     obstacle_pose = Pose()
+    #     obstacle_pose.position.x = 2.0
+    #     obstacle_pose.position.y = -1.1 + i*-0.15
+    #     obstacle_pose.position.z = 0.5
+    #     spawner.spawn_object(obstacle_name, obstacle_model, obstacle_pose)
+
+    #     time.sleep(spawn_interval)
+
+    spawn_objects(id=4, num_objects=6, spawn_interval=0.5, x_pose=2.0, y_pose=-1.1, z_pose=0.5, horizontal=True)
+
 
     rclpy.shutdown()
 
