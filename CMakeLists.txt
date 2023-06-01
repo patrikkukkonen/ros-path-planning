@@ -20,18 +20,24 @@ find_package(gazebo_ros_pkgs REQUIRED)
 
 # Install python scripts
 install(PROGRAMS
-  scripts/moving2.py
-  scripts/moving3.py
-  scripts/moving4.py
-  scripts/moving5.py
+  #scripts/moving2.py
+  #scripts/moving3.py
+  #scripts/moving4.py
+  #scripts/moving5.py
   scripts/waypoint_follower.py
   # scripts/waypoint_follower2.py
   #scripts/robot_navigator.py
   scripts/object_spawner.py
-  scripts/object_spawner2.py
-  scripts/object_spawner3.py
-  scripts/object_spawner4.py
-  scripts/object_spawner5.py
+  #scripts/object_spawner2.py
+  #scripts/object_spawner3.py
+  #scripts/object_spawner4.py
+  #scripts/object_spawner5.py
+
+  scripts/scenario1_objects.py
+  scripts/scenario2_objects.py
+  scripts/scenario3_objects.py
+  scripts/scenario4_objects.py
+  scripts/scenario5_objects.py
   DESTINATION lib/${PROJECT_NAME}
 )
 
