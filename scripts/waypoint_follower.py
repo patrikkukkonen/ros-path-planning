@@ -57,6 +57,8 @@ def main():
 
     # set our demo's goal poses to follow
     goal_poses = []
+
+    # PoseStamped() is a ROS2 message type for poses with a header (e.g. for frame_id and timestamp) and a pose (e.g. position and orientation)
     goal_pose1 = PoseStamped()
     goal_pose1.header.frame_id = 'map'
     goal_pose1.header.stamp = navigator.get_clock().now().to_msg()
@@ -92,11 +94,11 @@ def main():
 
     i = 0
     while not navigator.isTaskComplete():
-        ################################################
-        #
-        # Implement some code here for your application!
-        #
-        ################################################
+        ##################################################
+        #                                                #
+        # Implement some code here for your application! #
+        #                                                #
+        ##################################################
 
         # Do something with the feedback
         i = i + 1
@@ -110,18 +112,20 @@ def main():
             if now - nav_start > Duration(seconds=600.0):
                 navigator.cancelTask()
 
+            # Commenting this sovled the problem of the robot
+            # stopping at midway and not being able to continue to 
             # Some follow waypoints request change to demo preemption
-            if now - nav_start > Duration(seconds=35.0):
-                goal_pose4 = PoseStamped()
-                goal_pose4.header.frame_id = 'map'
-                goal_pose4.header.stamp = now.to_msg()
-                goal_pose4.pose.position.x = -5.0
-                goal_pose4.pose.position.y = -4.75
-                goal_pose4.pose.orientation.w = 0.707
-                goal_pose4.pose.orientation.z = 0.707
-                goal_poses = [goal_pose4]
-                nav_start = now
-                navigator.followWaypoints(goal_poses)
+            # if now - nav_start > Duration(seconds=35.0):
+            #     goal_pose4 = PoseStamped()
+            #     goal_pose4.header.frame_id = 'map'
+            #     goal_pose4.header.stamp = now.to_msg()
+            #     goal_pose4.pose.position.x = -5.0
+            #     goal_pose4.pose.position.y = -4.75
+            #     goal_pose4.pose.orientation.w = 0.707
+            #     goal_pose4.pose.orientation.z = 0.707
+            #     goal_poses = [goal_pose4]
+            #     nav_start = now
+            #     navigator.followWaypoints(goal_poses)
 
     # Do something depending on the return code
     result = navigator.getResult()
