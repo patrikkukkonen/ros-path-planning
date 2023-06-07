@@ -18,8 +18,8 @@ amcl:
     laser_min_range: -1.0
     laser_model_type: "likelihood_field"
     max_beams: 60
-    max_particles: 2000
-    min_particles: 500
+    max_particles: 2000  # 2000
+    min_particles: 500  # 500
     odom_frame_id: "odom"
     pf_err: 0.05
     pf_z: 0.99
@@ -120,6 +120,7 @@ controller_server:
     min_y_velocity_threshold: 0.1 #0.5
     min_theta_velocity_threshold: 0.1 #0.001
     failure_tolerance: 0.1 # 0.3
+    #transform_tolerance: 3.0 # 1.0
     progress_checker_plugin: "progress_checker"
     goal_checker_plugins: ["general_goal_checker"] # "precise_goal_checker"
     
@@ -190,7 +191,7 @@ controller_server:
       max_angular_accel: 3.2
       max_robot_pose_search_dist: 10.0
       use_interpolation: false
-      cost_scaling_dist: 0.3
+      cost_scaling_dist: 0.3  # 0.3
       cost_scaling_gain: 1.0
       inflation_cost_scaling_factor: 3.0
       
@@ -391,12 +392,12 @@ global_costmap:
         scan:
           topic: /scan
           max_obstacle_height: 2.0
-          clearing: True
+          clearing: True #false #True
           marking: True
           data_type: "LaserScan"
-          raytrace_max_range: 3.0
+          raytrace_max_range: 1.9 #3.0 # Reduce to 2.0 for robot to remember obstacles for longer in global costmap
           raytrace_min_range: 0.0
-          obstacle_max_range: 2.5
+          obstacle_max_range: 2.5 #2.5
           obstacle_min_range: 0.0
       static_layer:
         plugin: "nav2_costmap_2d::StaticLayer"
@@ -431,7 +432,7 @@ planner_server:
       # Dijskstra / Astar
       plugin: "nav2_navfn_planner/NavfnPlanner"
       tolerance: 0.5 # 0.5
-      use_astar: false # false
+      use_astar: True # false
       allow_unknown: true
       # added by me
       path_distance_bias: 32.0 #1000 #32.0
