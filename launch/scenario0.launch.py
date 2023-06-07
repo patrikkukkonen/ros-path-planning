@@ -14,6 +14,7 @@
 
 """This is all-in-one launch script intended for use by nav2 developers."""
 
+import datetime
 import os
 
 from ament_index_python.packages import get_package_share_directory
@@ -131,7 +132,7 @@ def generate_launch_description():
         'rviz_config_file',
         default_value=os.path.join(
             pkg_dir, 'rviz', 'nav2_config.rviz'), #bringup_dir, 'rviz', 'nav2_default_view.rviz'), # pkg_dir, 'rviz', 'nav2_config.rviz'),
-        description='Full path to the RVIZ config file to use') # TODO: improve the replanning of the path
+        description='Full path to the RVIZ config file to use')
 
     declare_use_simulator_cmd = DeclareLaunchArgument(
         'use_simulator',
@@ -159,7 +160,7 @@ def generate_launch_description():
         #              https://github.com/ROBOTIS-GIT/turtlebot3_simulations/issues/91
         # default_value=os.path.join(get_package_share_directory('turtlebot3_gazebo'),
         # worlds/turtlebot3_worlds/waffle.model')
-        default_value=os.path.join(pkg_dir, 'worlds', 'maze3.world'), # TODO: FIX THIS
+        default_value=os.path.join(pkg_dir, 'worlds', 'maze3.world'),
         description='Full path to world model file to load')
 
     declare_robot_name_cmd = DeclareLaunchArgument(
@@ -263,7 +264,7 @@ def generate_launch_description():
     # Spawner node for spawning objects
     spawner_cmd = Node(
         package='path_finding',
-        executable='scenario4_objects.py',
+        executable='scenario1_objects.py',
         output='screen')
     
     # Create a folder name based on the current timestamp
@@ -277,9 +278,38 @@ def generate_launch_description():
         output='screen'
     )
 
+    time_publisher = Node(
+            package='path_finding',
+            executable='time_to_goal_publisher',
+            name='time_to_goal_publisher'
+        )
+    
+    # Launch the OdometryModifier script to get total distance traveled
+    odom_modifier_node = Node(
+        package='path_finding',
+        executable='distance.py',
+        name='odometry_modifier',
+        output='screen'
+    )
+
+    # Launch the distance subscriber script to get total distance traveled
+    distance_subscriber_node = Node(
+        package='path_finding',
+        executable='distance2.py',
+        name='distance_subscriber',
+        output='screen'
+    )
+    
+
 
     # Create the launch description and populate
     ld = LaunchDescription()
+
+    # Distance node
+    #ld.add_action(odom_modifier_node)
+
+    # Distance subscriber node
+    #ld.add_action(distance_subscriber_node)
 
     # Declare the launch options
     ld.add_action(declare_namespace_cmd)
@@ -311,6 +341,10 @@ def generate_launch_description():
     ld.add_action(rviz_cmd)
     ld.add_action(bringup_cmd)
 
+    # ld.add_action(time_publisher)
+
+
+
 
     # Waypoint follower node
     #ld.add_action(waypoint_follower_node)
@@ -325,13 +359,16 @@ def generate_launch_description():
     #      period=10.0,
     #         actions=[rosbag_recorder]
     # ))
-    ld.add_action(rosbag_recorder)
+    #ld.add_action(rosbag_recorder)
+
 
     # Delay the start of the object spawner node by 25 seconds
-    ld.add_action(TimerAction(
-        period=25.0,
-        actions=[spawner_cmd]
-    ))
+    # ld.add_action(TimerAction(
+    #     period=45.0,
+    #     actions=[spawner_cmd]
+    # ))
+
+
 
     # print(pkg_dir)
     # print(pkg_dir)

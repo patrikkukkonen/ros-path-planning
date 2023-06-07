@@ -265,6 +265,17 @@ def generate_launch_description():
         package='path_finding',
         executable='scenario2_objects.py',
         output='screen')
+    
+    # Create a folder name based on the current timestamp
+    folder_name = "dijkstra"
+    # Specify the path and filename for saving the ROS bag
+    bag_file_path = '/bag_files/scenario1/' + folder_name + '/bagfile.bag'
+    # Launch node to start recording the ROS bag
+    rosbag_recorder = ExecuteProcess(
+        #cmd=['ros2', 'bag', 'record', '-a'],
+        cmd=['ros2', 'bag', 'record', '-s', 'mcap', '--all', '--include-hidden-topics'],
+        output='screen'
+    )
 
 
     # Create the launch description and populate
@@ -309,9 +320,16 @@ def generate_launch_description():
         actions=[waypoint_follower_cmd]
     ))
 
+    # Start rosbag record
+    # ld.add_action(TimerAction(
+    #      period=10.0,
+    #         actions=[rosbag_recorder]
+    # ))
+    ld.add_action(rosbag_recorder)
+
     # Delay the start of the object spawner node by 25 seconds
     ld.add_action(TimerAction(
-        period=25.0,
+        period=45.0,
         actions=[spawner_cmd]
     ))
 
