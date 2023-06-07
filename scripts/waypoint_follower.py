@@ -14,20 +14,64 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+import signal
+import time
 from geometry_msgs.msg import PoseStamped
 from nav2_simple_commander.robot_navigator import BasicNavigator, TaskResult
 import rclpy
 from rclpy.duration import Duration
+import os
+
+import math
+from nav_msgs.msg import Odometry
+
+from rclpy.node import Node
+from std_msgs.msg import Float32
+
+# from distance import OdometryModifier
+from distance2 import DistanceSubscriber
+
+from rclpy.executors import MultiThreadedExecutor
+
+
+# class CustomNavigator(BasicNavigator):
+#     def __init__(self):
+#         super().__init__()
+#         self.start_time = None
+#         self.total_distance = 0.0
+#         self.previous_pose = None
+
+#     def followWaypoints(self, waypoints):
+#         self.start_time = time.time()
+#         self.previous_pose = None
+#         super().followWaypoints(waypoints)
+
+#     def getFirstPathComputationTime(self):
+#         return time.time() - self.start_time
+
+#     def getDistanceTraveled(self):
+#         return self.total_distance
+
+#     def updateDistanceTraveled(self, current_pose):
+#         if self.previous_pose is not None:
+#             dx = current_pose.pose.position.x - self.previous_pose.pose.position.x
+#             dy = current_pose.pose.position.y - self.previous_pose.pose.position.y
+#             distance = (dx ** 2 + dy ** 2) ** 0.5
+#             self.total_distance += distance
+
+#         self.previous_pose = current_pose
+
 
 """
 Basic navigation demo to go to poses.
-"""
+"""   
 
 
 def main():
+
     rclpy.init()
 
-    navigator = BasicNavigator()
+    navigator = BasicNavigator() # CustomNavigator() # BasicNavigator()
 
     # Set our demo's initial pose
     # initial_pose = PoseStamped()
@@ -77,20 +121,27 @@ def main():
     goal_pose2.pose.orientation.w = 0.707
     goal_pose2.pose.orientation.z = 0.707
     goal_poses.append(goal_pose2)
-    # goal_pose3 = PoseStamped()
-    # goal_pose3.header.frame_id = 'map'
-    # goal_pose3.header.stamp = navigator.get_clock().now().to_msg()
-    # goal_pose3.pose.position.x = -3.6
-    # goal_pose3.pose.position.y = -4.75
-    # goal_pose3.pose.orientation.w = 0.707
-    # goal_pose3.pose.orientation.z = 0.707
-    # goal_poses.append(goal_pose3)
-
+    
     # sanity check a valid path exists
     # path = navigator.getPath(initial_pose, goal_pose1)
 
-    nav_start = navigator.get_clock().now()
+
+    # Pass in the goal poses to follow
     navigator.followWaypoints(goal_poses)
+    
+    #compute_time_end = time.time()
+    #compute_time = compute_time_end - compute_time_start
+    #print("Time to Compute: ", compute_time)
+
+
+    nav_start = navigator.get_clock().now()
+    start_time = time.time() # Track overall start time
+
+    # send the goals to the navigator
+    #compute_time_start = time.time()
+    waypoint1_time = 0
+    waypoint2_time = 0
+
 
     i = 0
     while not navigator.isTaskComplete():
@@ -108,9 +159,24 @@ def main():
                   str(feedback.current_waypoint + 1) + '/' + str(len(goal_poses)))
             now = navigator.get_clock().now()
 
+
             # Some navigation timeout to demo cancellation
             if now - nav_start > Duration(seconds=600.0):
                 navigator.cancelTask()
+            
+
+            if feedback.current_waypoint == 1 and waypoint1_time == 0:
+                waypoint_time = time.time()
+                #print("Time to compute first path: ", waypoint_time - compute_time_start)
+                waypoint1_time = waypoint_time - start_time
+                # feedback.current_waypoint = 0
+                #break
+            
+            # When second waypoint is being executed, start timer
+            if feedback.current_waypoint == 1 and waypoint2_time == 0:
+                waypoint_time = time.time()
+                waypoint2_time = 1
+
 
             # Commenting this sovled the problem of the robot
             # stopping at midway and not being able to continue to 
@@ -131,6 +197,17 @@ def main():
     result = navigator.getResult()
     if result == TaskResult.SUCCEEDED:
         print('Goal succeeded!')
+
+        # Print out statistics if goal succeeded
+        end_time = time.time() # Track overall end time
+        total_time = end_time - start_time # Calculate total time
+        
+        # Print out statistics
+        print("Waypoint 1 time: ", waypoint1_time)
+        print("Waypoint 2 time: ", end_time - waypoint_time)
+
+        print("Total time: ", total_time)
+
     elif result == TaskResult.CANCELED:
         print('Goal was canceled!')
     elif result == TaskResult.FAILED:
@@ -138,10 +215,10 @@ def main():
     else:
         print('Goal has an invalid return status!')
 
-    #navigator.lifecycleShutdown()
+    # Exit the program when the final goal is reached
+    #os.killpg(os.getpgid(0), signal.SIGINT)  # Send termination signal to process group
 
-    #exit(0)
-
+    
 
 if __name__ == '__main__':
     main()
