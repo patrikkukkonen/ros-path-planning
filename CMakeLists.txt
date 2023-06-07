@@ -10,13 +10,31 @@ find_package(ament_cmake REQUIRED) # default
 
 find_package(rclcpp REQUIRED)
 find_package(gazebo_ros_pkgs REQUIRED)
+
 # uncomment the following section in order to fill in
 # further dependencies manually.
 # find_package(<dependency> REQUIRED)
 
+#find_package(rclpy REQUIRED)
+find_package(std_msgs REQUIRED)
+
+
 # spawn and move object in gazebo
 #add_executable(moving2 scritps/moving2.py) # Add executable
 #ament_target_dependencies(moving2 rclcpp) # Add dependencies
+
+# # Add the executable for your time-to-goal publisher
+# add_executable(time_to_goal_publisher scripts/time_to_goal_publisher.cpp)
+
+# # Link against the necessary libraries
+# ament_target_dependencies(time_to_goal_publisher rclcpp std_msgs)
+
+# # Install the executable
+# install(TARGETS
+#   time_to_goal_publisher
+#   DESTINATION lib/${PROJECT_NAME}
+# )
+
 
 # Install python scripts
 install(PROGRAMS
@@ -38,6 +56,14 @@ install(PROGRAMS
   scripts/scenario3_objects.py
   scripts/scenario4_objects.py
   scripts/scenario5_objects.py
+
+  # script to execute all launch files
+  #scripts/time_to_goal_publisher.py
+  scripts/collision_count.py
+
+  scripts/distance.py
+  scripts/distance2.py
+
   DESTINATION lib/${PROJECT_NAME}
 )
 
