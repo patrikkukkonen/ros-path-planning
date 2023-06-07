@@ -60,24 +60,49 @@ class ObjectSpawner(Node):
         #spawner = ObjectSpawner() # Create an instance of the ObjectSpawner class
 
         # Create the obstacle model
-        obstacle_name = 'obstacle'
-        obstacle_model = """
+        horizontal_obstacle_name = 'horizontal_obstacle'
+        horizontal_obstacle_model = """
             <?xml version="1.0"?>
             <sdf version="1.7">
-            <model name="obstacle">
+            <model name="horizontal_obstacle">
                 <pose>0 0 0 0 0 0</pose>
                 <link name="link">
                     <collision name="collision">
                         <geometry>
                             <box>
-                                <size>0.1 0.1 0.25</size>
+                                <size>0.1 0.45 0.20</size> <!-- <size>0.1 0.1 0.25</size> -->
                             </box>
                         </geometry>
                     </collision>
                     <visual name="visual">
                         <geometry>
                             <box>
-                                <size>0.1 0.1 0.25</size>
+                                <size>0.1 0.45 0.20</size> <!-- <size>0.1 0.1 0.25</size> -->
+                            </box>
+                        </geometry>
+                    </visual>
+                </link>
+            </model>
+            </sdf>
+        """
+        vertical_obstacle_name = 'vertical_obstacle'
+        vertical_obstacle_model = """
+            <?xml version="1.0"?>
+            <sdf version="1.7">
+            <model name="vertical_obstacle">
+                <pose>0 0 0 0 0 0</pose>
+                <link name="link">
+                    <collision name="collision">
+                        <geometry>
+                            <box>
+                                <size>0.45 0.1 0.20</size> <!-- <size>0.1 0.1 0.25</size> -->
+                            </box>
+                        </geometry>
+                    </collision>
+                    <visual name="visual">
+                        <geometry>
+                            <box>
+                                <size>0.45 0.1 0.20</size> <!-- <size>0.1 0.1 0.25</size> -->
                             </box>
                         </geometry>
                     </visual>
@@ -89,23 +114,23 @@ class ObjectSpawner(Node):
         if horizontal:
             for i in range(num_objects):
                 # Spawn the obstacle at a specific poses
-                obstacle_name = f'obstacle{id}_{i}'
+                horizontal_obstacle_name = f'obstacle{id}_{i}'
                 obstacle_pose = Pose()
                 obstacle_pose.position.x = x_pose #-1.0
-                obstacle_pose.position.y = y_pose + i * -0.15 #-0.1 + i*-0.15
+                obstacle_pose.position.y = y_pose + i * -0.5 #0.5 for two obstacles #(for 6 obstacles)-0.15 #-0.1 + i*-0.15
                 obstacle_pose.position.z = z_pose #0.5
-                self.spawn_object(obstacle_name, obstacle_model, obstacle_pose)  # spawner
+                self.spawn_object(horizontal_obstacle_name, horizontal_obstacle_model, obstacle_pose)  # spawner
 
                 time.sleep(spawn_interval)
         else: # if vertical
             for i in range(num_objects):
                 # Spawn the obstacle at a specific poses
-                obstacle_name = f'obstacle{id}_{i}'
+                vertical_obstacle_name = f'obstacle{id}_{i}'
                 obstacle_pose = Pose()
-                obstacle_pose.position.x = x_pose + i * 0.15 #-1.0
+                obstacle_pose.position.x = x_pose + i * 0.5  # (for 6 obstacles) 0.15 #-1.0
                 obstacle_pose.position.y = y_pose
                 obstacle_pose.position.z = z_pose
-                self.spawn_object(obstacle_name, obstacle_model, obstacle_pose)  # spawner
+                self.spawn_object(vertical_obstacle_name, vertical_obstacle_model, obstacle_pose)  # spawner
 
                 time.sleep(spawn_interval)
         
@@ -115,6 +140,7 @@ class ObjectSpawner(Node):
         """Delete selected objects in Gazebo"""
         #spawner = ObjectSpawner() # Create an instance of the ObjectSpawner class
         # Delete the obstacles
+        
         for i in range(num_objects):
             obstacle_name = f'obstacle{id}_{i}'
             self.delete_object(obstacle_name)
