@@ -59,7 +59,7 @@ install(PROGRAMS
 
   # script to execute all launch files
   #scripts/time_to_goal_publisher.py
-  scripts/collision_count.py
+  #scripts/collision_count.py
 
   scripts/distance.py
   scripts/distance2.py
