@@ -11,8 +11,13 @@ def main():
     # spawner.spawn_objects(id=1, num_objects=6, spawn_interval=0.5, x_pose=-1.0, y_pose=-0.1, z_pose=0.5, horizontal=True)
     # spawner.spawn_objects(id=2, num_objects=6, spawn_interval=0.5, x_pose=-1.0, y_pose=-2.1, z_pose=0.5, horizontal=True)
     # reduced objects to improve performance
-    spawner.spawn_objects(id=1, num_objects=2, spawn_interval=0.5, x_pose=-1.0, y_pose=-0.25, z_pose=0.5, horizontal=True)
-    spawner.spawn_objects(id=2, num_objects=2, spawn_interval=0.5, x_pose=-1.0, y_pose=-2.25, z_pose=0.5, horizontal=True)
+    # spawner.spawn_objects(id=1, num_objects=2, spawn_interval=0.5, x_pose=-1.0, y_pose=-0.25, z_pose=0.5, horizontal=True)
+    # spawner.spawn_objects(id=2, num_objects=2, spawn_interval=0.5, x_pose=-1.0, y_pose=-2.25, z_pose=0.5, horizontal=True)
+
+    # reduce even more
+    spawner.spawn_objects(id=1, num_objects=1, spawn_interval=0.5, x_pose=-1.0, y_pose=-0.5, z_pose=0.5, horizontal=True)
+    spawner.spawn_objects(id=2, num_objects=1, spawn_interval=0.5, x_pose=-1.0, y_pose=-2.5, z_pose=0.5, horizontal=True)
+    
 
     rclpy.shutdown()
 
