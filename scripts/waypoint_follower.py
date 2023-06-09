@@ -25,6 +25,8 @@ import os
 import math
 from nav_msgs.msg import Odometry
 
+from geometry_msgs.msg import Quaternion
+
 from rclpy.node import Node
 from std_msgs.msg import Float32
 
@@ -103,23 +105,47 @@ def main():
     goal_poses = []
 
     # PoseStamped() is a ROS2 message type for poses with a header (e.g. for frame_id and timestamp) and a pose (e.g. position and orientation)
+    # Waypoint from initial point to first goal
     goal_pose1 = PoseStamped()
     goal_pose1.header.frame_id = 'map'
     goal_pose1.header.stamp = navigator.get_clock().now().to_msg()
     goal_pose1.pose.position.x = -2.5
     goal_pose1.pose.position.y = 2.5
-    goal_pose1.pose.orientation.w = 0.707
-    goal_pose1.pose.orientation.z = 0.707
+
+    # Convert the desired yaw angle to a quaternion
+    # yaw_angle = math.pi  # 180 degrees, facing west
+    # quaternion = Quaternion()
+    # quaternion.z = math.sin(yaw_angle / 2.0)
+    # quaternion.w = math.cos(yaw_angle / 2.0)
+
+    # goal_pose1.pose.orientation = quaternion
+    # goal_poses.append(goal_pose1)
+
+    # Orientation for first goal
+    goal_pose1.pose.orientation.w = 1.0 #0.707
+    goal_pose1.pose.orientation.z = 0.0 #-0.707
     goal_poses.append(goal_pose1)
 
-    # additional goals can be appended
+
+    # Waypoint from the first goal back to the initial point
     goal_pose2 = PoseStamped()
     goal_pose2.header.frame_id = 'map'
     goal_pose2.header.stamp = navigator.get_clock().now().to_msg()
     goal_pose2.pose.position.x = 2.5
     goal_pose2.pose.position.y = -2.0
-    goal_pose2.pose.orientation.w = 0.707
-    goal_pose2.pose.orientation.z = 0.707
+
+    # Convert the desired yaw angle to a quaternion
+    # yaw_angle = math.pi / 2.0  # 90 degrees, facing north
+    # quaternion = Quaternion()
+    # quaternion.z = math.sin(yaw_angle / 2.0)
+    # quaternion.w = math.cos(yaw_angle / 2.0)
+
+    # goal_pose2.pose.orientation = quaternion
+    # goal_poses.append(goal_pose2)
+
+    # Orientation for second goal
+    goal_pose2.pose.orientation.w = 1.0 #0.707
+    goal_pose2.pose.orientation.z = 0.0 #0.707
     goal_poses.append(goal_pose2)
     
     # sanity check a valid path exists
