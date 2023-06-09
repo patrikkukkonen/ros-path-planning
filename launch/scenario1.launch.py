@@ -361,12 +361,13 @@ def generate_launch_description():
     # ))
     #ld.add_action(rosbag_recorder)
 
-
-    # Delay the start of the object spawner node by 25 seconds
-    ld.add_action(TimerAction(
-        period=45.0,
-        actions=[spawner_cmd]
-    ))
+    # Spawner node for spawning objects
+    ld.add_action(spawner_cmd)
+    # Delay the start of the object spawner node by 45 seconds
+    # ld.add_action(TimerAction(
+    #     period=45.0,
+    #     actions=[spawner_cmd]
+    # ))
 
 
 
