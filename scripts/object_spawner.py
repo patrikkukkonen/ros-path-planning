@@ -70,14 +70,14 @@ class ObjectSpawner(Node):
                     <collision name="collision">
                         <geometry>
                             <box>
-                                <size>0.1 0.45 0.20</size> <!-- <size>0.1 0.1 0.25</size> -->
+                                <size>0.1 0.95 0.20</size> <!-- <size>0.1 0.45 0.20</size>  <size>0.1 0.1 0.25</size> -->
                             </box>
                         </geometry>
                     </collision>
                     <visual name="visual">
                         <geometry>
                             <box>
-                                <size>0.1 0.45 0.20</size> <!-- <size>0.1 0.1 0.25</size> -->
+                                <size>0.1 0.95 0.20</size> <!-- <size>0.1 0.45 0.20</size>  <size>0.1 0.1 0.25</size> -->
                             </box>
                         </geometry>
                     </visual>
@@ -95,14 +95,14 @@ class ObjectSpawner(Node):
                     <collision name="collision">
                         <geometry>
                             <box>
-                                <size>0.45 0.1 0.20</size> <!-- <size>0.1 0.1 0.25</size> -->
+                                <size>0.95 0.1 0.20</size> <!-- <size>0.45 0.1 0.20</size>  <size>0.1 0.1 0.25</size> -->
                             </box>
                         </geometry>
                     </collision>
                     <visual name="visual">
                         <geometry>
                             <box>
-                                <size>0.45 0.1 0.20</size> <!-- <size>0.1 0.1 0.25</size> -->
+                                <size>0.95 0.1 0.20</size>  <!-- <size>0.45 0.1 0.20</size> <size>0.1 0.1 0.25</size> -->
                             </box>
                         </geometry>
                     </visual>
