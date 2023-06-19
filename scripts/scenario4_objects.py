@@ -39,14 +39,13 @@ def main():
     time.sleep(25)
 
     for i in range(10):
-        spawner.spawn_objects(id=4, num_objects=1, spawn_interval=0.5, x_pose=2.0, y_pose=-1.5, z_pose=0.5, horizontal=True)
-        time.sleep(10)
         spawner.spawn_objects(id=5, num_objects=1, spawn_interval=0.5, x_pose=2.0, y_pose=-2.5, z_pose=0.5, horizontal=True)
         time.sleep(10)
-        spawner.delete_objects(id=4, num_objects=1, delete_interval=0.5)
-        time.sleep(10)
         spawner.delete_objects(id=5, num_objects=1, delete_interval=0.5)
+        time.sleep(10)        
+        spawner.spawn_objects(id=4, num_objects=1, spawn_interval=0.5, x_pose=2.0, y_pose=-1.5, z_pose=0.5, horizontal=True)
         time.sleep(10)
+        spawner.delete_objects(id=4, num_objects=1, delete_interval=0.5)
     # delete obstacles
     #spawner.delete_objects(id=4, num_objects=2, delete_interval=0.5)
     rclpy.shutdown()
