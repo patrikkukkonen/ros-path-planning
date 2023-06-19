@@ -122,7 +122,7 @@ def main():
     # goal_poses.append(goal_pose1)
 
     # Orientation for first goal
-    goal_pose1.pose.orientation.w = 1.0 #0.707
+    goal_pose1.pose.orientation.w = 0.5 # 1.0 #0.707
     goal_pose1.pose.orientation.z = 0.0 #-0.707
     goal_poses.append(goal_pose1)
 
@@ -144,7 +144,7 @@ def main():
     # goal_poses.append(goal_pose2)
 
     # Orientation for second goal
-    goal_pose2.pose.orientation.w = 1.0 #0.707
+    goal_pose2.pose.orientation.w = 0.5 #1.0 #0.707
     goal_pose2.pose.orientation.z = 0.0 #0.707
     goal_poses.append(goal_pose2)
     
