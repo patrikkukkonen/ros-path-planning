@@ -1,0 +1,9 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+authors:
+  - family-names: Kukkonen
+    given-names: Patrik
+title: "Master's Thesis Project: 'A Comparative Study of Path Finding Algorithms for Post-Disaster Rescue Missions using Unmanned Ground Vehicles'
+version: 1.0.0
+date-released: 2023-08-25
+country: Japan
