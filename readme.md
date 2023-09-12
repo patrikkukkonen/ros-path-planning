@@ -7,12 +7,14 @@ ROS2 Humble Hawksbill
 Gazebo 11
 
 After above reguirements are met:
-1. Building the ROS package
-- Colcon build
-2. Running the simulations
-- ros2 launch ros_package scenario*.launch.py
-3. 
-4. 
+
+Follow the colcon build instructions: [ROS Humble Documentation](https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Colcon-Tutorial.html#create-a-workspace)
+
+
+[//]: # (1. Building the ROS package)
+[//]: # (- Colcon build)
+[//]: # (2. Running the simulations)
+[//]: # (- ros2 launch ros_package scenario*.launch.py)
 
 #### Map
 ![alt text](/media/map/maze_points_paths.png)
